@@ -20,7 +20,8 @@ Branch: `ci/add-workflow-permissions`
 4. Repository dependency manifests detected:
    - `Cargo.toml`
    - `crates/oauth-mock/Cargo.toml`
-5. No vulnerable dependency changes were identified from the provided PR vulnerability data.
+5. Dependency file diff check (`git diff --name-only -- Cargo.toml crates/oauth-mock/Cargo.toml`) returned no changes.
+6. No vulnerable dependency changes were identified from the provided PR vulnerability data.
 
 ## Remediation Actions
 - No code or dependency changes were applied because there were no actionable vulnerabilities to remediate.

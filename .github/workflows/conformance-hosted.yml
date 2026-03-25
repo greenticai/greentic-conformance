@@ -10,6 +10,9 @@ on:
         description: 'Hosted plan identifier (from the web UI)'
         required: true
 
+permissions:
+  contents: read
+
 jobs:
   run:
     runs-on: ubuntu-latest

@@ -1,8 +1,8 @@
 # Security Fix Report
 
 Date: 2026-03-27 (UTC)
-Branch: `chore/shared-codex-security-fix`
-Commit: `d5c7748`
+Branch: `chore/use-reusable-auto-tag`
+Commit: `d06c0e7`
 
 ## Inputs Reviewed
 - User-provided Security alerts JSON:
@@ -18,19 +18,19 @@ Commit: `d5c7748`
   - `pr-vulnerable-changes.json`
 
 ## Validation Performed
-1. Parsed all security artifact JSON files listed above.
-2. Verified all alert/vulnerability arrays are empty.
-3. Checked working-tree PR diff for dependency changes with `git diff --name-only`.
-4. Searched for common dependency lockfiles/manifests to identify introduced dependency surface.
+1. Parsed all listed security artifact JSON files.
+2. Confirmed all alert/vulnerability arrays are empty.
+3. Checked current workspace diff for changed dependency manifests/lockfiles.
+4. Enumerated dependency manifests present in the repository (`Cargo.toml`, `crates/oauth-mock/Cargo.toml`).
 
 ## Findings
 1. No Dependabot alerts were present.
 2. No code scanning alerts were present.
 3. No PR dependency vulnerabilities were present.
-4. No dependency-file changes are present in this workspace diff.
+4. No new dependency-file vulnerabilities were introduced in the current workspace diff.
 
 ## Remediation Actions
-- No security code or dependency changes were required because no actionable vulnerabilities were identified.
+- No code or dependency changes were required because no actionable vulnerabilities were identified.
 - Updated this report for CI traceability.
 
 ## Files Changed
@@ -38,4 +38,4 @@ Commit: `d5c7748`
 
 ## Residual Risk
 - This result depends on the provided CI alert payload and local workspace state at scan time.
-- If advisories are published later, rerun CI security scanning.
+- New upstream advisories may appear after this run; rerun CI security scans on future changes.

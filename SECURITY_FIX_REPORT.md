@@ -1,41 +1,39 @@
 # Security Fix Report
 
 Date: 2026-03-27 (UTC)
-Branch: `chore/use-reusable-auto-tag`
-Commit: `d06c0e7`
+Branch: `chore/sync-toolchain`
+Commit: `82ebef0`
 
 ## Inputs Reviewed
-- User-provided Security alerts JSON:
+- Security alerts JSON (provided in task):
   - Dependabot: `[]`
   - Code scanning: `[]`
-- User-provided New PR Dependency Vulnerabilities: `[]`
-- Repository artifacts:
+- New PR Dependency Vulnerabilities (provided in task): `[]`
+- Repository security artifacts:
   - `security-alerts.json`
   - `dependabot-alerts.json`
   - `code-scanning-alerts.json`
-  - `all-dependabot-alerts.json`
-  - `all-code-scanning-alerts.json`
   - `pr-vulnerable-changes.json`
 
 ## Validation Performed
-1. Parsed all listed security artifact JSON files.
-2. Confirmed all alert/vulnerability arrays are empty.
-3. Checked current workspace diff for changed dependency manifests/lockfiles.
-4. Enumerated dependency manifests present in the repository (`Cargo.toml`, `crates/oauth-mock/Cargo.toml`).
+1. Parsed all provided and repository security alert JSON files.
+2. Confirmed all alert/vulnerability lists are empty.
+3. Enumerated dependency manifests in repo (`Cargo.toml`, `crates/oauth-mock/Cargo.toml`).
+4. Reviewed current PR/workspace diff and confirmed no dependency manifests or lockfiles were modified.
 
 ## Findings
-1. No Dependabot alerts were present.
-2. No code scanning alerts were present.
-3. No PR dependency vulnerabilities were present.
-4. No new dependency-file vulnerabilities were introduced in the current workspace diff.
+1. No Dependabot alerts are present.
+2. No code-scanning alerts are present.
+3. No PR dependency vulnerabilities are present.
+4. No new vulnerabilities were introduced via dependency-file changes in this PR.
 
 ## Remediation Actions
-- No code or dependency changes were required because no actionable vulnerabilities were identified.
+- No dependency or source changes were required because no actionable vulnerabilities were identified.
 - Updated this report for CI traceability.
 
 ## Files Changed
 - `SECURITY_FIX_REPORT.md`
 
 ## Residual Risk
-- This result depends on the provided CI alert payload and local workspace state at scan time.
-- New upstream advisories may appear after this run; rerun CI security scans on future changes.
+- Results reflect the provided alert payloads and current workspace state at scan time.
+- New advisories may appear later; continue running CI security scans on subsequent changes.

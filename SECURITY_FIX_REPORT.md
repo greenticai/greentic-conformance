@@ -1,35 +1,41 @@
 # Security Fix Report
 
-Date: 2026-03-25 (UTC)
-Branch: `ci/add-workflow-permissions`
+Date: 2026-03-27 (UTC)
+Branch: `chore/shared-codex-security-fix`
+Commit: `d5c7748`
 
 ## Inputs Reviewed
-- `security-alerts.json`
-- `dependabot-alerts.json`
-- `code-scanning-alerts.json`
-- `pr-vulnerable-changes.json`
-- User-provided payload:
-  - Dependabot alerts: `[]`
-  - Code scanning alerts: `[]`
-  - New PR dependency vulnerabilities: `[]`
+- User-provided Security alerts JSON:
+  - Dependabot: `[]`
+  - Code scanning: `[]`
+- User-provided New PR Dependency Vulnerabilities: `[]`
+- Repository artifacts:
+  - `security-alerts.json`
+  - `dependabot-alerts.json`
+  - `code-scanning-alerts.json`
+  - `all-dependabot-alerts.json`
+  - `all-code-scanning-alerts.json`
+  - `pr-vulnerable-changes.json`
+
+## Validation Performed
+1. Parsed all security artifact JSON files listed above.
+2. Verified all alert/vulnerability arrays are empty.
+3. Checked working-tree PR diff for dependency changes with `git diff --name-only`.
+4. Searched for common dependency lockfiles/manifests to identify introduced dependency surface.
 
 ## Findings
-1. Dependabot alerts: none.
-2. Code scanning alerts: none.
-3. PR dependency vulnerability list: empty.
-4. Repository dependency manifests detected:
-   - `Cargo.toml`
-   - `crates/oauth-mock/Cargo.toml`
-5. Dependency file diff check (`git diff --name-only -- Cargo.toml crates/oauth-mock/Cargo.toml`) returned no changes.
-6. No vulnerable dependency changes were identified from the provided PR vulnerability data.
+1. No Dependabot alerts were present.
+2. No code scanning alerts were present.
+3. No PR dependency vulnerabilities were present.
+4. No dependency-file changes are present in this workspace diff.
 
 ## Remediation Actions
-- No code or dependency changes were applied because there were no actionable vulnerabilities to remediate.
-- Added this report for CI traceability.
+- No security code or dependency changes were required because no actionable vulnerabilities were identified.
+- Updated this report for CI traceability.
 
 ## Files Changed
 - `SECURITY_FIX_REPORT.md`
 
 ## Residual Risk
-- No active alerts were provided in this run.
-- If new advisories are published after this CI execution, re-run security scanning/audit in a network-enabled job.
+- This result depends on the provided CI alert payload and local workspace state at scan time.
+- If advisories are published later, rerun CI security scanning.

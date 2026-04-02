@@ -5,7 +5,7 @@ edition.workspace = true
 rust-version.workspace = true
 license = "MIT"
 description = "Embedded OAuth2/OIDC mock provider for tests and CI"
-repository = "https://github.com/greentic-ai/greentic-conformance"
+repository = "https://github.com/greenticai/greentic-conformance"
 
 [features]
 default = ["pkce", "device_code"]
@@ -37,3 +37,4 @@ reqwest = { workspace = true }
 serde_json = { workspace = true }
 serde = { workspace = true }
 anyhow = { workspace = true }
+

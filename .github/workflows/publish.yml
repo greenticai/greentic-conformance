@@ -19,26 +19,12 @@ env:
   USER_ID: ci-user
 
 jobs:
-  build-test:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
-      - uses: dtolnay/rust-toolchain@stable
-        with:
-          toolchain: 1.85.0
-          components: rustfmt, clippy
-      - uses: Swatinem/rust-cache@v2
-      - name: Lint & Test
-        run: |
-          cargo fmt --all -- --check
-          cargo clippy --workspace --all-targets -- -D warnings
-          cargo build --workspace --all-features
-          cargo test --workspace --all-features -- --nocapture
+  ci:
+    uses: ./.github/workflows/ci.yml
 
   publish:
     if: github.event_name == 'push'
-    # Always publish off the exact commit we tested.
-    needs: build-test
+    needs: ci
     runs-on: ubuntu-latest
     permissions:
       contents: read

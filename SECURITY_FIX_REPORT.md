@@ -1,35 +1,35 @@
 # Security Fix Report
 
 Date: 2026-04-02 (UTC)
-Branch: `chore/add-concurrency-groups`
-Commit: `f6bcfee`
+Branch: `ci/consolidate-publish`
+Commit: 6a33983
 
-## Inputs Reviewed
-- Task-provided security alerts JSON:
-  - Dependabot: `[]`
-  - Code scanning: `[]`
-- Repository security artifacts:
-  - `security-alerts.json`
-  - `dependabot-alerts.json`
-  - `code-scanning-alerts.json`
+## Scope
+Reviewed security alerts provided in the CI task payload:
 
-## Validation Performed
-1. Parsed the task-provided alerts payload.
-2. Verified repository alert files are empty arrays for Dependabot and code scanning.
-3. Confirmed there are no actionable vulnerabilities to remediate from the supplied CI inputs.
+```json
+{
+  "dependabot": [],
+  "code_scanning": []
+}
+```
+
+Also verified repository alert artifacts:
+- `dependabot-alerts.json`
+- `code-scanning-alerts.json`
+- `security-alerts.json`
 
 ## Findings
-1. No Dependabot alerts present.
-2. No code scanning alerts present.
-3. No remediation-required vulnerabilities identified.
+1. Dependabot alerts: none.
+2. Code scanning alerts: none.
+3. No actionable vulnerabilities were identified.
 
-## Remediation Actions
-- No source code or dependency changes were made, because there were no security alerts to fix.
-- Updated `SECURITY_FIX_REPORT.md` for CI traceability.
+## Remediation
+- No code or dependency changes were required because there were no vulnerabilities to fix.
+- Updated this report for CI auditability.
 
-## Files Changed
+## Files Modified
 - `SECURITY_FIX_REPORT.md`
 
 ## Residual Risk
-- This result is scoped to the provided alert payload and in-repository alert files at the time of review.
-- New vulnerabilities may appear in future scans as dependencies or rules change.
+This result applies only to the alert data available in this CI run. Future scans may surface new findings.

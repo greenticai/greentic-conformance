@@ -1,1 +1,12 @@
+.github/workflows/auto-tag.yml
+.github/workflows/ci.yml
+.github/workflows/codeql.yml
+.github/workflows/codex-security-fix.yml
+.github/workflows/conformance-hosted.yml
+.github/workflows/conformance.yml
 .github/workflows/dependency-review.yml
+.github/workflows/oauth-conformance.yml
+.github/workflows/oauth-fapi-nightly.yml
+.github/workflows/provider-azure.yml
+.github/workflows/provider-google.yml
+.github/workflows/publish.yml

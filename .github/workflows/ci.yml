@@ -40,7 +40,7 @@ jobs:
       OAUTH_GITHUB_REDIRECT_URI: ${{ secrets.OAUTH_GITHUB_REDIRECT_URI }}
     steps:
       - uses: actions/checkout@v4
-      - uses: dtolnay/rust-toolchain@stable
+      - uses: dtolnay/rust-toolchain@1.94.0
         with:
           toolchain: 1.85.0
           components: rustfmt, clippy

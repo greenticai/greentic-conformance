@@ -1,9 +1,10 @@
 name: oauth-conformance
 
 on:
-  pull_request:
-    branches:
-      - '**'
+  schedule:
+    - cron: "26 4 * * *"
+  workflow_dispatch:
+  # pull_request: removed per plans/binary-bifurcation.md Phase A heavy-job sweep
 
 permissions:
   contents: read

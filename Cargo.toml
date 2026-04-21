@@ -13,14 +13,14 @@ assert_cmd = "2"
 axum = { version = "0.8", features = ["macros", "json"] }
 base64 = "0.22"
 ed25519-dalek = { version = "2", features = ["rand_core"] }
-greentic-interfaces = { version = "0.4" }
-greentic-interfaces-host = { version = "0.4" }
-greentic-interfaces-guest = { version = "0.4" }
-greentic-oauth-sdk = { version = "0.4" }
-greentic-pack = { version = "0.4" }
-greentic-runner = { version = "0.4" }
-greentic-secrets = { version = "0.4" }
-greentic-types = { version = "0.4" }
+greentic-interfaces = { version = "0.5" }
+greentic-interfaces-host = { version = "0.5" }
+greentic-interfaces-guest = { version = "0.5" }
+greentic-oauth-sdk = { version = "0.5" }
+greentic-pack-lib = { version = "0.5" }
+greentic-runner = { version = "0.5" }
+greentic-secrets-lib = { version = "0.5" }
+greentic-types = { version = "0.5" }
 handlebars = "6"
 josekit = { version = "0.10" }
 jsonwebtoken = { version = "10", default-features = false, features = ["rust_crypto", "use_pem"] }
@@ -80,15 +80,21 @@ greentic-interfaces = { workspace = true, optional = true }
 greentic-interfaces-host = { workspace = true, optional = true }
 greentic-interfaces-guest = { workspace = true, optional = true }
 greentic-runner = { workspace = true, optional = true }
-greentic-pack = { workspace = true }
-greentic-secrets = { workspace = true, optional = true }
+# The published `greentic-pack` crate is now a CLI crate with lib name
+# `packc` (0.5+). The library exports (PackLoad, open_pack, builder::*)
+# that this crate's shims + bin import from `greentic_pack::…` live in
+# the sibling `greentic-pack-lib` crate (lib name `greentic_pack`).
+greentic-pack-lib = { workspace = true }
+# Same shape for secrets: CLI-only crate renamed; library is
+# `greentic-secrets-lib` (lib name `greentic_secrets_lib`).
+greentic-secrets-lib = { workspace = true, optional = true }
 greentic-oauth-sdk = { workspace = true, optional = true }
 
 
 [features]
 default = []
 runner = ["dep:greentic-runner"]
-policy = ["dep:greentic-secrets", "dep:greentic-interfaces"]
+policy = ["dep:greentic-secrets-lib", "dep:greentic-interfaces"]
 oauth = ["dep:greentic-oauth-sdk", "dep:axum", "dep:reqwest"]
 
 [dev-dependencies]

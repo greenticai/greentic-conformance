@@ -1,0 +1,31 @@
+name: Nightly Semver Advisory
+
+# Advisory-mode cargo-semver-checks on a nightly schedule. Both workspace
+# crates are publish = false so this is effectively a no-op today; the file
+# exists for consistency with the Wave 2 pattern. See
+# plans/binary-bifurcation.md Phase A.4.
+
+on:
+  schedule:
+    # 07:05 UTC — staggered to avoid hot-spots.
+    - cron: "5 7 * * *"
+  workflow_dispatch:
+    inputs:
+      baseline-rev:
+        description: "Optional explicit baseline git ref (default: latest vX.Y.Z tag)"
+        required: false
+        type: string
+        default: ""
+
+permissions:
+  contents: read
+
+concurrency:
+  group: nightly-semver-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  advisory:
+    uses: greenticai/.github/.github/workflows/nightly-semver-advisory.yml@main
+    with:
+      semver-baseline-rev: ${{ inputs.baseline-rev || '' }}

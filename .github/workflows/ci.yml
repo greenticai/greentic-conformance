@@ -24,6 +24,12 @@ jobs:
       # since ~2026-04-02 and the shim fix is outside this migration's scope.
       clippy-args: "--workspace --all-targets -- -D warnings"
       test-args: "--workspace --all-features -- --nocapture"
+      # TenantContext::detect() requires these in CI (env.rs). Previously set
+      # at workflow-env scope in the pre-reusable ci.yml.
+      setup-script: |
+        echo "TENANT_ID=ci-tenant" >> "$GITHUB_ENV"
+        echo "TEAM_ID=ci-team" >> "$GITHUB_ENV"
+        echo "USER_ID=ci-user" >> "$GITHUB_ENV"
 
   oauth:
     runs-on: ubuntu-latest

@@ -1,10 +1,12 @@
 name: OIDF Conformance (RP)
 
 on:
+  schedule:
+    - cron: "24 4 * * *"
   workflow_dispatch:
   push:
     branches: [ main ]
-  pull_request:
+  # pull_request: removed per plans/binary-bifurcation.md Phase A heavy-job sweep
 
 permissions:
   contents: read

@@ -20,7 +20,12 @@ fn test_messaging_flow_validates_node_types_and_routing() -> Result<()> {
 
 #[test]
 fn test_invalid_routing_references_unknown_node() {
-    let err = validate_flow_folder("fixtures/flows").unwrap_err();
+    let temp = tempfile::tempdir().unwrap();
+    let src = fixture("flow_with_invalid_routing.ygtc");
+    let dst = temp.path().join("flow_with_invalid_routing.ygtc");
+    fs::copy(src, &dst).unwrap();
+
+    let err = validate_flow_folder(temp.path().to_str().unwrap()).unwrap_err();
     assert!(
         format!("{err:#}").contains("routes to missing node"),
         "unexpected error: {err:?}"

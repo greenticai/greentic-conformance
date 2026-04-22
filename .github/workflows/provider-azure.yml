@@ -3,8 +3,8 @@ name: provider-azure
 on:
   workflow_dispatch:
   schedule:
-    - cron: "0 6 * * *"
-  pull_request: {}
+    - cron: "33 3 * * *"
+  # pull_request: removed per plans/binary-bifurcation.md Phase A heavy-job sweep
 
 permissions:
   contents: read
@@ -30,7 +30,7 @@ jobs:
         uses: actions/checkout@v4
 
       - name: Set up Rust toolchain
-        uses: dtolnay/rust-toolchain@stable
+        uses: dtolnay/rust-toolchain@1.94.0
         with:
           toolchain: 1.86.0
 

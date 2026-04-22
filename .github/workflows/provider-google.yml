@@ -3,7 +3,7 @@ name: provider-google
 on:
   workflow_dispatch:
   schedule:
-    - cron: "30 6 * * *"
+    - cron: "41 3 * * *"
   # pull_request: removed per plans/binary-bifurcation.md Phase A heavy-job sweep
 
 permissions:

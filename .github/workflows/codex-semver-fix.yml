@@ -1,8 +1,8 @@
 name: Codex Semver Fix
 on:
   schedule:
-    # 05:25 UTC — staggered to avoid hot-spots. See plans/binary-bifurcation.md Phase A.4.
-    - cron: "25 5 * * *"
+    # 03:32 UTC — staggered to avoid hot-spots. See plans/binary-bifurcation.md Phase A.7.2.
+    - cron: "32 3 * * *"
   workflow_dispatch:
     inputs:
       branch:

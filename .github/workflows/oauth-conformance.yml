@@ -30,7 +30,21 @@ jobs:
         uses: dtolnay/rust-toolchain@1.94.0
 
       - name: Build workspace
-        run: cargo build --workspace --locked
+        run: cargo build --workspace
+
+      - name: Clone OIDF conformance suite
+        env:
+          # Pin a known revision when stabilising. `main` keeps the stub
+          # honest about following upstream until a real RP under test
+          # exists.
+          SUITE_REF: ${{ vars.OIDF_SUITE_REF || 'main' }}
+        run: |
+          git clone --depth 1 --branch "$SUITE_REF" \
+            https://gitlab.com/openid/conformance-suite.git \
+            "$GITHUB_WORKSPACE/../conformance-suite"
+
+      - name: Generate proxy TLS cert
+        run: ./ci/docker/httpd/gen-certs.sh
 
       - name: Start conformance stack
         run: docker compose -f ci/docker/compose.conformance.yml up -d --wait

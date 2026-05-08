@@ -34,10 +34,11 @@ jobs:
 
       - name: Clone OIDF conformance suite
         env:
-          # Pin a known revision when stabilising. `main` keeps the stub
+          # Pin a known revision when stabilising. `master` keeps the stub
           # honest about following upstream until a real RP under test
-          # exists.
-          SUITE_REF: ${{ vars.OIDF_SUITE_REF || 'main' }}
+          # exists. (Upstream gitlab.com/openid/conformance-suite uses
+          # `master` as its default branch.)
+          SUITE_REF: ${{ vars.OIDF_SUITE_REF || 'master' }}
         run: |
           git clone --depth 1 --branch "$SUITE_REF" \
             https://gitlab.com/openid/conformance-suite.git \

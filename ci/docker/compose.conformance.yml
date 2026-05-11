@@ -1,0 +1,87 @@
+# Local OIDF conformance suite stack.
+#
+# The OpenID Foundation does not publish an official Docker image for the
+# conformance suite. The supported workflow is to clone the upstream
+# project (https://gitlab.com/openid/conformance-suite) into a sibling
+# directory and let docker compose build it from source.
+#
+# The CI workflow clones the suite into ../conformance-suite before
+# running `docker compose up`, matching the upstream dev compose layout.
+# To pin a known-good revision, set SUITE_REF in the workflow.
+#
+# Running locally:
+#   git -C .. clone https://gitlab.com/openid/conformance-suite.git
+#   docker compose -f ci/docker/compose.conformance.yml up -d --wait
+#
+# Network shape:
+#   - mongo: state for the suite, no host port
+#   - server: spring-boot suite app on 8080 (cluster network only)
+#   - httpd:  TLS termination + reverse proxy, exposes 8443 to host
+#
+# This compose file is intentionally minimal — it stands the suite up
+# but does not bundle an RP under test. The conformance plan step will
+# fail until an RP is reachable at $RP_BASE_URL.
+
+services:
+  mongo:
+    image: mongo:7
+    restart: unless-stopped
+    volumes:
+      - mongo-data:/data/db
+    healthcheck:
+      test: ["CMD", "mongosh", "--quiet", "--eval", "db.runCommand({ ping: 1 }).ok"]
+      interval: 5s
+      timeout: 5s
+      retries: 20
+      start_period: 10s
+
+  server:
+    build:
+      # Sibling clone of https://gitlab.com/openid/conformance-suite.
+      # The workflow checks this out before `docker compose up`.
+      context: ../../../conformance-suite
+      dockerfile: Dockerfile
+    depends_on:
+      mongo:
+        condition: service_healthy
+    environment:
+      - JAVA_OPTS=-Dspring.profiles.active=run-suite
+      - SPRING_PROFILES_ACTIVE=run-suite
+    expose:
+      - "8080"
+    healthcheck:
+      test: ["CMD", "wget", "-qO-", "http://localhost:8080/api/runner/available"]
+      interval: 10s
+      timeout: 5s
+      retries: 30
+      start_period: 60s
+
+  httpd:
+    image: httpd:2.4
+    depends_on:
+      server:
+        condition: service_healthy
+    ports:
+      - "8443:443"
+    volumes:
+      - ./httpd/conformance.conf:/usr/local/apache2/conf/extra/conformance.conf:ro
+      - ./httpd/server.crt:/usr/local/apache2/conf/server.crt:ro
+      - ./httpd/server.key:/usr/local/apache2/conf/server.key:ro
+    command: >
+      sh -c "
+      sed -i 's|^#LoadModule ssl_module.*|LoadModule ssl_module modules/mod_ssl.so|' /usr/local/apache2/conf/httpd.conf &&
+      sed -i 's|^#LoadModule socache_shmcb_module.*|LoadModule socache_shmcb_module modules/mod_socache_shmcb.so|' /usr/local/apache2/conf/httpd.conf &&
+      sed -i 's|^#LoadModule proxy_module.*|LoadModule proxy_module modules/mod_proxy.so|' /usr/local/apache2/conf/httpd.conf &&
+      sed -i 's|^#LoadModule proxy_http_module.*|LoadModule proxy_http_module modules/mod_proxy_http.so|' /usr/local/apache2/conf/httpd.conf &&
+      sed -i 's|^#Include conf/extra/httpd-ssl.conf|Include conf/extra/conformance.conf|' /usr/local/apache2/conf/httpd.conf &&
+      httpd-foreground
+      "
+    healthcheck:
+      test: ["CMD", "sh", "-c", "wget --no-check-certificate -qO- https://localhost/health || exit 1"]
+      interval: 10s
+      timeout: 5s
+      retries: 20
+      start_period: 30s
+
+volumes:
+  mongo-data:

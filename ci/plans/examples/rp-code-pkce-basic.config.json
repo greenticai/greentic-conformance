@@ -1,5 +1,10 @@
 {
   "display": "rp-code-pkce-basic",
+  "oidf_plan_name": "oidcc-client-basic-certification-test-plan",
+  "oidf_variant": {
+    "request_type": "plain_http_request",
+    "client_registration": "dynamic_client"
+  },
   "client": {
     "redirect_uri": "https://rp.example.com/_conformance/callback",
     "response_type": "code",

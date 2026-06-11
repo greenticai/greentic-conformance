@@ -1,12 +1,9 @@
 name: OIDF Conformance (RP)
 
 on:
-  schedule:
-    - cron: "24 4 * * *"
+  # Disabled: schedule + push triggers removed; manual dispatch only.
+  # Nightly scheduled runs were failing; kept runnable on demand.
   workflow_dispatch:
-  push:
-    branches: [ main ]
-  # pull_request: removed per plans/binary-bifurcation.md Phase A heavy-job sweep
 
 permissions:
   contents: read

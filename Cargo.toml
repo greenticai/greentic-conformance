@@ -3,7 +3,7 @@ members = ["crates/oauth-mock"]
 resolver = "2"
 
 [workspace.package]
-version = "1.1.0-dev.0"
+version = "1.1.0"
 edition = "2024"
 rust-version = "1.89"
 
@@ -13,14 +13,14 @@ assert_cmd = "2"
 axum = { version = "0.8", features = ["macros", "json"] }
 base64 = "0.22"
 ed25519-dalek = { version = "2", features = ["rand_core"] }
-greentic-interfaces = { version = ">=1.1.0-dev, <1.2.0-0" }
-greentic-interfaces-host = { version = ">=1.1.0-dev, <1.2.0-0" }
-greentic-interfaces-guest = { version = ">=1.1.0-dev, <1.2.0-0" }
-greentic-oauth-sdk = { version = ">=1.1.0-dev, <1.2.0-0" }
-greentic-pack-lib = { version = ">=1.1.0-dev, <1.2.0-0" }
-greentic-runner = { version = ">=1.1.0-dev, <1.2.0-0" }
-greentic-secrets-lib = { version = ">=1.1.0-dev, <1.2.0-0" }
-greentic-types = { version = ">=1.1.0-dev, <1.2.0-0" }
+greentic-interfaces = { version = ">=1.1.0-0, <1.2.0-0" }
+greentic-interfaces-host = { version = ">=1.1.0-0, <1.2.0-0" }
+greentic-interfaces-guest = { version = ">=1.1.0-0, <1.2.0-0" }
+greentic-oauth-sdk = { version = ">=1.1.0-0, <1.2.0-0" }
+greentic-pack-lib = { version = ">=1.1.0-0, <1.2.0-0" }
+greentic-runner = { version = ">=1.1.0-0, <1.2.0-0" }
+greentic-secrets-lib = { version = ">=1.1.0-0, <1.2.0-0" }
+greentic-types = { version = ">=1.1.0-0, <1.2.0-0" }
 handlebars = "6"
 josekit = { version = "0.10" }
 jsonwebtoken = { version = "10", default-features = false, features = ["rust_crypto", "use_pem"] }

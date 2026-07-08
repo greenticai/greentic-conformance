@@ -10,7 +10,6 @@ pub enum ProviderKind {
 
 #[allow(dead_code)]
 #[derive(Debug, Clone)]
-#[allow(dead_code)]
 pub struct ProviderConfig {
     pub kind: ProviderKind,
     pub client_id: Option<String>,

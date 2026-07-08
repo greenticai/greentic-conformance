@@ -107,7 +107,6 @@ async fn spawn_mock_server() -> Result<Option<MockServer>> {
 
 #[allow(dead_code)]
 #[derive(Debug, Deserialize)]
-#[allow(dead_code)]
 struct TokenResponse {
     access_token: String,
     #[serde(default)]
@@ -425,7 +424,6 @@ async fn exchange_code(ctx: &TestContext, code: &str, verifier: &str) -> Result<
 
 #[allow(dead_code)]
 #[derive(Debug, Deserialize, Clone)]
-#[allow(dead_code)]
 struct IdTokenClaims {
     iss: String,
     sub: String,
@@ -449,8 +447,8 @@ fn decode_id_token(ctx: &TestContext, token: &str) -> Result<IdTokenClaims> {
         .map_err(|err| anyhow!("failed to build decoding key: {err}"))?;
 
     let mut validation = Validation::new(Algorithm::RS256);
-    validation.set_audience(&[ctx.client_id.clone()]);
-    validation.set_issuer(&[ctx.issuer.clone()]);
+    validation.set_audience(std::slice::from_ref(&ctx.client_id));
+    validation.set_issuer(std::slice::from_ref(&ctx.issuer));
 
     let token_data = jsonwebtoken::decode::<IdTokenClaims>(token, &decoding_key, &validation)?;
     Ok(token_data.claims)

@@ -1089,7 +1089,31 @@ fn verify_code_challenge(verifier: &str, expected_challenge: &str) -> Result<boo
     Ok(encoded == expected_challenge)
 }
 
+/// Pins the jsonwebtoken crypto provider for this process.
+///
+/// jsonwebtoken 10 picks its provider from crate features, and refuses to guess
+/// when both `rust_crypto` and `aws_lc_rs` are on — it installs a provider whose
+/// signer and verifier panic instead. This workspace hits exactly that: the mock
+/// asks for `rust_crypto`, while `oci-client`'s `rustls-tls` (reached through
+/// greentic-distributor-client -> greentic-flow -> greentic-pack-lib) turns on
+/// `aws_lc_rs`, and Cargo unifies features across the workspace. Nothing in this
+/// repo can drop either side, so the choice is made explicitly here instead.
+///
+/// Idempotent, and deliberately tolerant of `Err`: that only means another
+/// component installed a provider first, and either one signs and verifies the
+/// RS256 tokens this mock issues.
+pub fn install_crypto_provider() {
+    static ONCE: std::sync::Once = std::sync::Once::new();
+    ONCE.call_once(|| {
+        let _ = jsonwebtoken::crypto::rust_crypto::DEFAULT_PROVIDER.install_default();
+    });
+}
+
 fn generate_signing_keys() -> Result<SigningKeys> {
+    // Every mock server start funnels through here, so this is the one place
+    // that has to run before the first sign or verify.
+    install_crypto_provider();
+
     use rsa::rand_core::OsRng;
     use rsa::traits::PublicKeyParts;
     use rsa::{RsaPrivateKey, pkcs1::EncodeRsaPrivateKey};
